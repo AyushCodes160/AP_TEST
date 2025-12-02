@@ -141,19 +141,20 @@ MeowCollab/
 
 ---
 
-## � Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 *   **Node.js** (v14 or higher)
 *   **npm** (Node Package Manager)
+*   **PostgreSQL Database** (e.g., local or free tier on [Neon.tech](https://neon.tech))
 *   **JDoodle API Credentials** (for code execution)
 
 ### Installation
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/AyushCodes160/Test_Sub.git
-    cd Test_Sub
+    git clone https://github.com/AyushCodes160/AP_GROUP_PROJECT.git
+    cd AP_GROUP_PROJECT
     ```
 
 2.  **Install Server Dependencies:**
@@ -173,6 +174,8 @@ MeowCollab/
     Create a `.env` file in the `server` directory:
     ```env
     PORT=5001
+    DATABASE_URL="postgresql://user:password@host:port/database"
+    FRONTEND_URL="http://localhost:3000"
     jDoodle_clientId=YOUR_JDOODLE_CLIENT_ID
     kDoodle_clientSecret=YOUR_JDOODLE_CLIENT_SECRET
     SESSION_SECRET=your_super_secret_session_key
@@ -183,7 +186,21 @@ MeowCollab/
     GITHUB_CLIENT_SECRET=...
     ```
 
-5.  **Start the Application:**
+    Create a `.env` file in the `client` directory:
+    ```env
+    REACT_APP_BACKEND_URL="http://localhost:5001"
+    ```
+
+5.  **Database Setup:**
+    
+    Initialize the database schema:
+    ```bash
+    cd server
+    npx prisma generate
+    npx prisma db push
+    ```
+
+6.  **Start the Application:**
 
     **Backend:**
     ```bash
@@ -197,7 +214,7 @@ MeowCollab/
     npm start
     ```
 
-6.  **Access the App:**
+7.  **Access the App:**
     Open your browser and navigate to `http://localhost:3000`.
 
 ---
