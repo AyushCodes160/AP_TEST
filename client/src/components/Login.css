@@ -1,0 +1,228 @@
+.login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-content {
+  width: 100%;
+}
+
+.login-card {
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid #333333;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+.logo-container {
+  margin-bottom: 2rem;
+}
+
+.logo-text {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #E50914 0%, #ff4757 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tagline {
+  color: #b3b3b3;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Social Login Buttons */
+.social-login-section {
+  margin-top: 2rem;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid #333333;
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.google-btn {
+  background: #ffffff;
+  color: #333333;
+  border-color: #dadce0;
+}
+
+.google-btn:hover {
+  background: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.github-btn {
+  background: #24292e;
+  color: #ffffff;
+  border-color: #24292e;
+}
+
+.github-btn:hover {
+  background: #2f363d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #666666;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #333333;
+}
+
+.divider span {
+  padding: 0 1rem;
+  font-size: 0.9rem;
+  color: #888888;
+}
+
+/* Email Login Form */
+.email-login-form {
+  margin-top: 1.5rem;
+}
+
+.professional-input {
+  background: rgba(40, 40, 40, 0.8);
+  border: 1px solid #444444;
+  color: #ffffff;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.professional-input:focus {
+  background: rgba(50, 50, 50, 0.9);
+  border-color: #E50914;
+  box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.1);
+  outline: none;
+  color: #ffffff;
+}
+
+.professional-input::placeholder {
+  color: #888888;
+}
+
+/* Buttons */
+.btn-professional {
+  background: linear-gradient(135deg, #E50914 0%, #ff4757 100%);
+  border: none;
+  color: #ffffff;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+}
+
+.btn-professional:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(229, 9, 20, 0.4);
+  background: linear-gradient(135deg, #ff1a24 0%, #ff5767 100%);
+}
+
+.btn-outline-professional {
+  background: transparent;
+  border: 2px solid #E50914;
+  color: #E50914;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-professional:hover {
+  background: #E50914;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+}
+
+/* Sign up text */
+.signup-text {
+  color: #888888;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+.signup-link {
+  color: #E50914;
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.signup-link:hover {
+  color: #ff4757;
+  text-decoration: underline;
+}
+
+/* Animation */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .logo-text {
+    font-size: 1.75rem;
+  }
+
+  .social-btn {
+    font-size: 0.95rem;
+    padding: 12px 16px;
+  }
+}

@@ -1,10 +1,22 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CodeIcon from "./CodeIcon";
+import toast from "react-hot-toast";
 
 function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setIsLoggedIn(true);
+      setUsername(storedUsername);
+    }
+  }, []);
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -12,6 +24,16 @@ function Navbar() {
 
   const closeNavbar = () => {
     setIsOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("authMethod");
+    setIsLoggedIn(false);
+    setUsername("");
+    toast.success("Logged out successfully");
+    navigate("/login");
+    closeNavbar();
   };
 
   return (
@@ -99,6 +121,61 @@ function Navbar() {
               >
                 Start Coding
               </Link>
+            </li>
+            <li className="nav-item">
+              {isLoggedIn ? (
+                <button
+                  className="nav-link nav-link-animated"
+                  onClick={handleLogout}
+                  style={{
+                    fontWeight: "400",
+                    color: "#b3b3b3",
+                    fontSize: "0.95rem",
+                    padding: "0.5rem 1rem",
+                    textDecoration: "none",
+                    transition: "color 0.2s ease",
+                    position: "relative",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.color = "#ffffff";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.color = "#b3b3b3";
+                  }}
+                >
+                  Logout ({username})
+                </button>
+              ) : (
+                <Link
+                  className={`nav-link nav-link-animated ${location.pathname === "/login" ? "active" : ""}`}
+                  to="/login"
+                  onClick={closeNavbar}
+                  style={{
+                    fontWeight: location.pathname === "/login" ? "600" : "400",
+                    color: location.pathname === "/login" ? "#ffffff" : "#b3b3b3",
+                    fontSize: "0.95rem",
+                    padding: "0.5rem 1rem",
+                    textDecoration: "none",
+                    transition: "color 0.2s ease",
+                    position: "relative"
+                  }}
+                  onMouseEnter={(e) => {
+                    if (location.pathname !== "/login") {
+                      e.target.style.color = "#ffffff";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (location.pathname !== "/login") {
+                      e.target.style.color = "#b3b3b3";
+                    }
+                  }}
+                >
+                  Login
+                </Link>
+              )}
             </li>
           </ul>
         </div>

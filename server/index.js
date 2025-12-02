@@ -5,6 +5,9 @@ const { Server } = require("socket.io");
 const ACTIONS = require("./Actions");
 const cors = require("cors");
 const axios = require("axios");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const { passport, registerUser } = require("./auth");
 const server = http.createServer(app);
 require("dotenv").config();
 
@@ -27,11 +30,34 @@ const languageConfig = {
   r: { versionIndex: "3" },
 };
 
-// Enable CORS
-app.use(cors());
+// Enable CORS with credentials
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
+
+// Parse cookies
+app.use(cookieParser());
 
 // Parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'meowcollab-secret-key-change-in-production',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // set to true in production with HTTPS
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 const io = new Server(server, {
   cors: {
@@ -97,6 +123,81 @@ io.on("connection", (socket) => {
 app.get("/", (req, res) => {
   res.json({ message: "MeowCollab Server is running", status: "ok" });
 });
+
+// ============ Authentication Routes ============
+
+
+
+// Email/Password Registration
+app.post('/auth/register', async (req, res) => {
+  try {
+    const { email, password, username } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+    
+    const user = await registerUser(email, password, username);
+    
+    // Log the user in after registration
+    req.login(user, (err) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error logging in after registration' });
+      }
+      res.json({ success: true, user: { id: user.id, email: user.email, username: user.username } });
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Email/Password Login
+app.post('/auth/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return res.status(500).json({ error: 'Authentication error' });
+    }
+    if (!user) {
+      return res.status(401).json({ error: info.message || 'Invalid credentials' });
+    }
+    req.login(user, (err) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error logging in' });
+      }
+      res.json({ success: true, user: { id: user.id, email: user.email, username: user.username } });
+    });
+  })(req, res, next);
+});
+
+// Logout
+app.post('/auth/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error logging out' });
+    }
+    res.json({ success: true, message: 'Logged out successfully' });
+  });
+});
+
+// Get current user
+app.get('/auth/user', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ 
+      authenticated: true, 
+      user: { 
+        id: req.user.id, 
+        email: req.user.email, 
+        username: req.user.username,
+        provider: req.user.provider,
+        avatar: req.user.avatar
+      } 
+    });
+  } else {
+    res.json({ authenticated: false });
+  }
+});
+
+// ============ End Authentication Routes ============
 
 app.post("/compile", async (req, res) => {
   const { code, language } = req.body;
