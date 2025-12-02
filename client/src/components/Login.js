@@ -11,12 +11,28 @@ function Login() {
   const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
 
-  const handleGuestLogin = () => {
-    const guestUsername = `Guest_${Math.floor(Math.random() * 10000)}`;
-    localStorage.setItem("username", guestUsername);
-    localStorage.setItem("authMethod", "guest");
-    toast.success(`Welcome, ${guestUsername}!`);
-    navigate("/");
+  const handleGuestLogin = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/auth/guest", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        localStorage.setItem("username", data.user.username);
+        localStorage.setItem("authMethod", "guest");
+        toast.success(`Welcome, ${data.user.username}!`);
+        navigate("/");
+      } else {
+        toast.error("Failed to create guest session");
+      }
+    } catch (error) {
+      console.error("Guest login error:", error);
+      toast.error("Failed to connect to server");
+    }
   };
 
   const validateForm = () => {

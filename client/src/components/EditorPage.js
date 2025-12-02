@@ -174,6 +174,12 @@ function EditorPage() {
     } catch (error) {
       console.error("Error compiling code:", error);
 
+      if (error.response?.status === 401) {
+        toast.error("Session expired. Please log in again.");
+        navigate("/login");
+        return;
+      }
+
       if (error.response?.data?.output) {
         setOutput(error.response.data.output);
       } else if (error.response?.data?.error) {

@@ -164,6 +164,13 @@ app.post('/auth/logout', (req, res) => {
   });
 });
 
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).json({ error: "Unauthorized. Please log in or continue as guest." });
+};
+
 app.get('/auth/user', (req, res) => {
   if (req.isAuthenticated()) {
     res.json({ 
@@ -181,8 +188,27 @@ app.get('/auth/user', (req, res) => {
   }
 });
 
+app.post('/auth/guest', (req, res) => {
+  const guestUser = {
+    id: `guest_${Date.now()}`,
+    username: `Guest_${Math.floor(Math.random() * 10000)}`,
+    email: null,
+    provider: 'guest',
+    providerId: null,
+    avatar: null,
+    createdAt: new Date().toISOString()
+  };
 
-app.post("/compile", async (req, res) => {
+  req.login(guestUser, (err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error creating guest session' });
+    }
+    res.json({ success: true, user: guestUser });
+  });
+});
+
+
+app.post("/compile", ensureAuthenticated, async (req, res) => {
   const { code, language } = req.body;
 
   if (!code || !language) {
