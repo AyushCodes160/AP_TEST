@@ -113,6 +113,9 @@ function Home() {
           </div>
         </div>
       </div>
+      <footer className="fixed-bottom text-center py-3" style={{ color: 'rgba(255,255,255,0.5)' }}>
+        <small>Built with ❤️ by MeowCollab Team</small>
+      </footer>
     </div>
   );
 }
