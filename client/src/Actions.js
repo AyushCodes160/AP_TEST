@@ -1,4 +1,3 @@
-// All the events
 
 export const ACTIONS = {
   JOIN: "join",

@@ -1,166 +1,205 @@
 # 🧩 MeowCollab – Real-Time Collaborative Code Editor
 
+![License](https://img.shields.io/badge/license-ISC-blue.svg)
+![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-green.svg)
+![React](https://img.shields.io/badge/react-18.2.0-blue.svg)
+
 ## 🚀 Overview
 
-MeowCollab is a full-stack web platform that enables developers, students, and teams to write, run, and collaborate on code in real time — directly from their browsers.
+**MeowCollab** is a powerful, full-stack web application designed for seamless real-time code collaboration. It empowers developers, students, and interviewers to write, execute, and debug code together in a shared virtual environment.
 
-It combines a powerful live code editor, secure backend execution, and real-time collaboration, making it perfect for coding sessions, interviews, and learning environments.
+With support for **16 programming languages**, secure authentication, and instant code synchronization, MeowCollab bridges the gap between remote team members, making pair programming and technical interviews efficient and interactive.
 
-## ⚙️ Core Features
+---
 
-### 🧠 1. Real-Time Collaborative Editor
+## 🌟 Key Features
 
-- Multiple users can edit the same file simultaneously
-- Live syntax highlighting with CodeMirror editor
-- Powered by Socket.IO for smooth, low-latency updates
-- Each user's changes are instantly visible to others
-- See who's currently online in the room
+### 🧠 Real-Time Collaboration
+*   **Live Editing:** See changes as they happen. Multiple users can type in the same file simultaneously without conflicts.
+*   **Instant Synchronization:** Powered by **Socket.IO**, ensuring low-latency updates across all connected clients.
+*   **Presence Indicators:** See who is currently active in the room with a dynamic user list.
 
-### 💻 2. Code Execution (Multi-Language Support)
+### 💻 Powerful Code Execution
+*   **Multi-Language Support:** Write and run code in **16 languages** including Python, Java, C++, JavaScript (Node.js), Go, Rust, and more.
+*   **Secure Sandbox:** Code is executed securely via the **JDoodle API**, isolating user code from the server infrastructure.
+*   **Live Output:** View compilation results, standard output, and error logs instantly in the integrated terminal.
 
-- Supports **16 programming languages**: Python3, Java, C++, C, Node.js, Ruby, Go, Scala, Bash, SQL, Pascal, C#, PHP, Swift, Rust, and R
-- Code is executed securely on the backend using JDoodle API
-- Displays real-time output and error logs
-- Built-in compiler panel for testing code
+### 🔐 Authentication & Security
+*   **Flexible Login:** Choose your preferred method:
+    *   **Guest Access:** Quick entry for instant collaboration without sign-up.
+    *   **Social Login:** One-click sign-in with **Google** or **GitHub**.
+    *   **Email/Password:** Traditional secure account creation.
+*   **Session Management:** Persistent sessions using `express-session` and secure cookies.
+*   **Password Hashing:** User passwords are encrypted using `bcrypt` for maximum security.
 
-### 👥 3. Room-Based Collaboration
+### 🎨 Modern Developer Experience
+*   **Sleek UI:** Built with **React** and **Bootstrap**, featuring a dark-themed interface optimized for long coding sessions.
+*   **Syntax Highlighting:** Integrated **CodeMirror** editor with the Dracula theme for excellent code readability.
+*   **Room Management:** Generate unique room IDs to create private coding spaces.
 
-- Create or join collaborative rooms using unique shareable room IDs
-- No authentication required - quick and easy collaboration
-- Share room IDs with team members to start coding together instantly
+---
 
-### 🎨 4. Modern Developer Interface
+## 🏗️ Architecture & Tech Stack
 
-- Clean, responsive UI with a dark theme
-- Built using React with Bootstrap for styling
-- CodeMirror editor with Dracula theme for syntax highlighting
-- Real-time member list showing active collaborators
-- Easy room ID copying and sharing
+MeowCollab follows a modern **MERN-style** architecture (MongoDB, Express, React, Node.js), utilizing WebSockets for real-time communication.
 
-## 🧱 Tech Stack
+### 🔧 Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React, Bootstrap CSS, CodeMirror Editor |
-| Backend | Node.js (Express) |
-| Realtime Collaboration | Socket.IO |
-| Code Execution | JDoodle API |
-| Build Tool | React Scripts (Create React App) |
-| Routing | React Router DOM |
+| Category | Technology | Purpose |
+|----------|------------|---------|
+| **Frontend** | React.js | Component-based UI library |
+| | Bootstrap 5 | Responsive styling and layout |
+| | CodeMirror | Advanced code editor component |
+| | Socket.IO Client | Real-time bidirectional communication |
+| | Axios | HTTP client for API requests |
+| **Backend** | Node.js | Runtime environment |
+| | Express.js | Web framework for API and routing |
+| | Socket.IO | WebSocket server for collaboration events |
+| | Passport.js | Authentication middleware (Local, Google, GitHub) |
+| **Execution** | JDoodle API | Remote code execution engine |
+| **Data** | JSON / In-Memory | Lightweight data storage (scalable to MongoDB) |
 
-## 📋 Prerequisites
+### 📊 System Architecture (ER Diagram)
 
-- Node.js (v14 or higher)
-- npm or yarn
-- JDoodle API credentials (for code execution)
+Below is the conceptual data model and interaction flow for the application.
 
-## 🚀 Getting Started
+```mermaid
+erDiagram
+    USER ||--o{ ROOM : joins
+    USER {
+        string id PK
+        string username
+        string email
+        string password_hash
+        string provider "local/google/github"
+        string avatar_url
+    }
+    ROOM ||--|{ SESSION : contains
+    ROOM {
+        string roomId PK
+        string currentCode
+        string language
+    }
+    SESSION {
+        string socketId PK
+        string userId FK
+        timestamp connectedAt
+    }
+```
 
-### Installation
+---
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd meowcollab
-   ```
+## 📂 Project Structure
 
-2. Install dependencies for both client and server:
-   ```bash
-   # Install server dependencies
-   cd server
-   npm install
+```bash
+MeowCollab/
+├── client/                 # Frontend React Application
+│   ├── public/            # Static assets
+│   ├── src/
+│   │   ├── components/    # Reusable UI components (Editor, Navbar, etc.)
+│   │   ├── pages/         # Main application pages
+│   │   ├── App.js         # Main component & Routing
+│   │   └── socket.js      # Socket.IO client instance
+│   └── package.json       # Client dependencies
+│
+├── server/                 # Backend Node.js Application
+│   ├── auth.js            # Passport authentication strategies
+│   ├── index.js           # Express server & Socket.IO setup
+│   ├── Actions.js         # WebSocket event constants
+│   ├── users.json         # File-based user storage
+│   └── package.json       # Server dependencies
+│
+└── README.md              # Project documentation
+```
 
-   # Install client dependencies
-   cd ../client
-   npm install
-   ```
-
-3. Set up environment variables:
-
-   **Server** (`server/.env`):
-   ```env
-   PORT=5001
-   jDoodle_clientId=your_jdoodle_client_id
-   kDoodle_clientSecret=your_jdoodle_client_secret
-   ```
-
-   **Client** (`client/.env`):
-   ```env
-   REACT_APP_BACKEND_URL=http://localhost:5001
-   ```
-
-4. Start the development servers:
-   ```bash
-   # Start the backend server (from server directory)
-   npm start
-
-   # Start the frontend (from client directory, in a new terminal)
-   npm start
-   ```
-
-5. Open your browser and navigate to `http://localhost:3000`
-
-## 🎯 Usage
-
-1. **Create a Room**: Click "New Room" to generate a unique room ID
-2. **Join a Room**: Enter a room ID and your username, then click "JOIN"
-3. **Start Coding**: Write code in the collaborative editor
-4. **Select Language**: Choose from 16 supported programming languages
-5. **Run Code**: Click "Open Compiler" to test and execute your code
-6. **Share**: Copy the room ID and share it with collaborators
+---
 
 ## 📝 Supported Languages
 
-- Python3
-- Java
-- C++
-- C
-- Node.js (JavaScript)
-- Ruby
-- Go
-- Scala
-- Bash
-- SQL
-- Pascal
-- C#
-- PHP
-- Swift
-- Rust
-- R
+1.  **Python 3**
+2.  **Java**
+3.  **C++**
+4.  **C**
+5.  **Node.js (JavaScript)**
+6.  **Ruby**
+7.  **Go**
+8.  **Scala**
+9.  **Bash**
+10. **SQL**
+11. **Pascal**
+12. **C#**
+13. **PHP**
+14. **Swift**
+15. **Rust**
+16. **R**
 
-## 🔧 Configuration
+---
 
-### JDoodle API Setup
+## � Getting Started
 
-To enable code execution, you need to set up JDoodle API credentials:
+### Prerequisites
+*   **Node.js** (v14 or higher)
+*   **npm** (Node Package Manager)
+*   **JDoodle API Credentials** (for code execution)
 
-1. **Sign up for JDoodle**:
-   - Go to https://www.jdoodle.com/
-   - Click "Sign Up" or "Login" if you already have an account
-   - JDoodle offers a free tier with limited requests
+### Installation
 
-2. **Get API Credentials**:
-   - After logging in, go to your account dashboard
-   - Navigate to "API" or "Credentials" section
-   - Copy your **Client ID** and **Client Secret**
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/AyushCodes160/Test_Sub.git
+    cd Test_Sub
+    ```
 
-3. **Add to Environment File**:
-   - Open `server/.env` file
-   - Add the following lines:
-     ```
-     PORT=5001
-     jDoodle_clientId=your_client_id_here
-     kDoodle_clientSecret=your_client_secret_here
-     ```
-   - Replace `your_client_id_here` and `your_client_secret_here` with your actual credentials
+2.  **Install Server Dependencies:**
+    ```bash
+    cd server
+    npm install
+    ```
 
-4. **Restart the Server**:
-   - Stop the server (Ctrl+C)
-   - Start it again with `npm start`
-   - The code execution should now work!
+3.  **Install Client Dependencies:**
+    ```bash
+    cd ../client
+    npm install
+    ```
 
-**Note**: The free tier of JDoodle has usage limits. For production use, consider upgrading to a paid plan.
+4.  **Environment Configuration:**
 
-## 📝 License
+    Create a `.env` file in the `server` directory:
+    ```env
+    PORT=5001
+    jDoodle_clientId=YOUR_JDOODLE_CLIENT_ID
+    kDoodle_clientSecret=YOUR_JDOODLE_CLIENT_SECRET
+    SESSION_SECRET=your_super_secret_session_key
+    # Optional: For Google/GitHub Auth
+    GOOGLE_CLIENT_ID=...
+    GOOGLE_CLIENT_SECRET=...
+    GITHUB_CLIENT_ID=...
+    GITHUB_CLIENT_SECRET=...
+    ```
 
-ISC
+5.  **Start the Application:**
+
+    **Backend:**
+    ```bash
+    cd server
+    npm start
+    ```
+
+    **Frontend:**
+    ```bash
+    cd client
+    npm start
+    ```
+
+6.  **Access the App:**
+    Open your browser and navigate to `http://localhost:3000`.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
+
+## � License
+
+This project is licensed under the **ISC License**.

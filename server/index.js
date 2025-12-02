@@ -30,32 +30,27 @@ const languageConfig = {
   r: { versionIndex: "3" },
 };
 
-// Enable CORS with credentials
 app.use(cors({
   origin: "http://localhost:3000",
   credentials: true
 }));
 
-// Parse cookies
 app.use(cookieParser());
 
-// Parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session middleware
 app.use(session({
   secret: process.env.SESSION_SECRET || 'meowcollab-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // set to true in production with HTTPS
+    secure: false,
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
 
-// Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -85,7 +80,6 @@ io.on("connection", (socket) => {
     userSocketMap[socket.id] = username;
     socket.join(roomId);
     const clients = getAllConnectedClients(roomId);
-    // notify that new user join
     clients.forEach(({ socketId }) => {
       io.to(socketId).emit(ACTIONS.JOINED, {
         clients,
@@ -95,19 +89,15 @@ io.on("connection", (socket) => {
     });
   });
 
-  // sync the code
   socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => {
     socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
   });
-  // when new user join the room all the code which are there are also shows on that persons editor
   socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
     io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
   });
 
-  // leave room
   socket.on("disconnecting", () => {
     const rooms = [...socket.rooms];
-    // leave all the room
     rooms.forEach((roomId) => {
       socket.in(roomId).emit(ACTIONS.DISCONNECTED, {
         socketId: socket.id,
@@ -124,11 +114,9 @@ app.get("/", (req, res) => {
   res.json({ message: "MeowCollab Server is running", status: "ok" });
 });
 
-// ============ Authentication Routes ============
 
 
 
-// Email/Password Registration
 app.post('/auth/register', async (req, res) => {
   try {
     const { email, password, username } = req.body;
@@ -139,7 +127,6 @@ app.post('/auth/register', async (req, res) => {
     
     const user = await registerUser(email, password, username);
     
-    // Log the user in after registration
     req.login(user, (err) => {
       if (err) {
         return res.status(500).json({ error: 'Error logging in after registration' });
@@ -151,7 +138,6 @@ app.post('/auth/register', async (req, res) => {
   }
 });
 
-// Email/Password Login
 app.post('/auth/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
@@ -169,7 +155,6 @@ app.post('/auth/login', (req, res, next) => {
   })(req, res, next);
 });
 
-// Logout
 app.post('/auth/logout', (req, res) => {
   req.logout((err) => {
     if (err) {
@@ -179,7 +164,6 @@ app.post('/auth/logout', (req, res) => {
   });
 });
 
-// Get current user
 app.get('/auth/user', (req, res) => {
   if (req.isAuthenticated()) {
     res.json({ 
@@ -197,12 +181,10 @@ app.get('/auth/user', (req, res) => {
   }
 });
 
-// ============ End Authentication Routes ============
 
 app.post("/compile", async (req, res) => {
   const { code, language } = req.body;
 
-  // Validate input
   if (!code || !language) {
     return res.status(400).json({ 
       error: "Code and language are required",
@@ -210,7 +192,6 @@ app.post("/compile", async (req, res) => {
     });
   }
 
-  // Check if JDoodle credentials are configured
   if (!process.env.jDoodle_clientId || !process.env.kDoodle_clientSecret) {
     console.error("JDoodle credentials not configured");
     return res.status(500).json({ 
@@ -219,7 +200,6 @@ app.post("/compile", async (req, res) => {
     });
   }
 
-  // Validate language
   if (!languageConfig[language]) {
     return res.status(400).json({ 
       error: `Unsupported language: ${language}`,
@@ -235,10 +215,9 @@ app.post("/compile", async (req, res) => {
       clientId: process.env.jDoodle_clientId,
       clientSecret: process.env.kDoodle_clientSecret,
     }, {
-      timeout: 10000, // 10 second timeout
+      timeout: 10000,
     });
 
-    // Handle JDoodle response
     if (response.data && response.data.statusCode) {
       if (response.data.statusCode === 200) {
         res.json({
@@ -268,7 +247,6 @@ app.post("/compile", async (req, res) => {
     }
     
     if (error.response) {
-      // JDoodle API error
       return res.status(error.response.status || 500).json({ 
         error: error.response.data?.error || "Compilation failed",
         output: error.response.data?.output || `Error: ${error.response.data?.error || 'Failed to execute code'}`

@@ -2,7 +2,6 @@ import React from 'react';
 import Avatar from 'react-avatar';
 
 function Client({username}) {
-  // Provide a default value if username is undefined
   const displayName = username || 'Anonymous';
 
   return (

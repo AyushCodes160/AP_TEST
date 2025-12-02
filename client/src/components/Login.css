@@ -43,7 +43,6 @@
   margin: 0;
 }
 
-/* Social Login Buttons */
 .social-login-section {
   margin-top: 2rem;
 }
@@ -90,7 +89,6 @@
   transform: translateY(-1px);
 }
 
-/* Divider */
 .divider {
   display: flex;
   align-items: center;
@@ -112,7 +110,6 @@
   color: #888888;
 }
 
-/* Email Login Form */
 .email-login-form {
   margin-top: 1.5rem;
 }
@@ -139,7 +136,6 @@
   color: #888888;
 }
 
-/* Buttons */
 .btn-professional {
   background: linear-gradient(135deg, #E50914 0%, #ff4757 100%);
   border: none;
@@ -176,7 +172,6 @@
   box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
 }
 
-/* Sign up text */
 .signup-text {
   color: #888888;
   font-size: 0.9rem;
@@ -195,7 +190,6 @@
   text-decoration: underline;
 }
 
-/* Animation */
 .fade-in {
   animation: fadeIn 0.5s ease-in;
 }
@@ -205,13 +199,13 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .login-card {
     padding: 2rem 1.5rem;

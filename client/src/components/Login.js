@@ -59,7 +59,6 @@ function Login() {
           <div className="col-12 col-md-6 col-lg-5">
             <div className="login-card fade-in">
               <div className="card-body text-center">
-                {/* Logo */}
                 <div className="logo-container mb-4">
                   <div className="logo-icon" style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "0.5rem" }}>
                     <CodeIcon size={48} color="#E50914" />
@@ -100,7 +99,6 @@ function Login() {
                   <span>or</span>
                 </div>
 
-                {/* Guest Login */}
                 <button
                   onClick={handleGuestLogin}
                   className="btn btn-outline-professional w-100 mt-3"

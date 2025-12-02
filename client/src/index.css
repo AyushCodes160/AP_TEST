@@ -27,12 +27,10 @@ code {
     monospace;
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -50,11 +48,11 @@ html {
   background: #555555;
 }
 
-/* Subtle animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -64,13 +62,11 @@ html {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Professional text */
 .gradient-text {
   color: #ffffff;
   font-weight: 700;
 }
 
-/* Global button styles - All buttons red with black text */
 button.btn,
 a.btn,
 .btn,
@@ -117,7 +113,6 @@ a.btn-professional:active,
   color: #000000 !important;
 }
 
-/* Navbar link hover animation - Red line */
 .nav-link-animated {
   position: relative;
   display: inline-block;

@@ -13,7 +13,6 @@ import {
 import { toast } from "react-hot-toast";
 import axios from "axios";
 
-// List of supported languages
 const LANGUAGES = [
   "python3",
   "java",
@@ -60,19 +59,16 @@ function EditorPage() {
         socketRef.current = await initSocket();
         console.log("Socket initialized, joining room...");
 
-        // Socket is now connected, join the room
         socketRef.current.emit(ACTIONS.JOIN, {
           roomId,
           username: Location.state?.username,
         });
 
-        // Handle future connection errors
         socketRef.current.on("connect_error", (err) => {
           console.error("Connection error:", err);
           handleErrors(err);
         });
 
-        // Set up event listeners only if socket is initialized
         socketRef.current.on(
           ACTIONS.JOINED,
           ({ clients, username, socketId }) => {
@@ -137,13 +133,11 @@ function EditorPage() {
   };
 
   const runCode = async () => {
-    // Get current code from editor instance or codeRef
     let currentCode = codeRef.current || "";
 
-    // If codeRef is empty, try to get it directly from editor
     if (!currentCode && editorInstanceRef.current) {
       currentCode = editorInstanceRef.current.getValue() || "";
-      codeRef.current = currentCode; // Update ref for future use
+      codeRef.current = currentCode;
     }
 
     if (!currentCode || currentCode.trim() === "") {
@@ -161,12 +155,11 @@ function EditorPage() {
         code: currentCode,
         language: selectedLanguage,
       }, {
-        timeout: 15000, // 15 second timeout
+        timeout: 15000,
       });
 
       console.log("Backend response:", response.data);
 
-      // Handle response
       if (response.data.output !== undefined) {
         if (response.data.output === "" && response.data.statusCode !== 200) {
           setOutput(response.data.error || "Compilation failed. Please check your code.");
@@ -182,7 +175,6 @@ function EditorPage() {
       console.error("Error compiling code:", error);
 
       if (error.response?.data?.output) {
-        // Server returned an error message
         setOutput(error.response.data.output);
       } else if (error.response?.data?.error) {
         setOutput(`Error: ${error.response.data.error}`);
@@ -207,7 +199,6 @@ function EditorPage() {
   return (
     <div className="container-fluid d-flex flex-column editor-container" style={{ height: "calc(100vh - 56px)", background: "#141414" }}>
       <div className="row flex-grow-1">
-        {/* Client panel */}
         <div className="col-md-2 text-light d-flex flex-column editor-sidebar" style={{
           background: "#000000",
           borderRight: "1px solid #333333"
@@ -227,7 +218,6 @@ function EditorPage() {
           </div>
           <hr style={{ borderColor: "#333333", margin: "0.5rem 0" }} />
 
-          {/* Client list container */}
           <div className="d-flex flex-column flex-grow-1 overflow-auto">
             <span className="mb-2">Members</span>
             {clients.map((client) => (
@@ -236,7 +226,6 @@ function EditorPage() {
           </div>
 
           <hr style={{ borderColor: "#333333", margin: "0.5rem 0" }} />
-          {/* Buttons */}
           <div className="mt-auto mb-3" style={{ padding: "0 10px" }}>
             <button
               className="btn w-100 mb-2"
@@ -288,9 +277,7 @@ function EditorPage() {
           </div>
         </div>
 
-        {/* Editor panel */}
         <div className="col-md-10 text-light d-flex flex-column" style={{ background: "#141414" }}>
-          {/* Language selector */}
           <div className="p-3 d-flex justify-content-end" style={{
             background: "#000000",
             borderBottom: "1px solid #333333"
@@ -330,7 +317,6 @@ function EditorPage() {
         </div>
       </div>
 
-      {/* Compiler toggle button */}
       <button
         className="btn btn-professional position-fixed bottom-0 end-0 m-3"
         onClick={toggleCompileWindow}
@@ -344,7 +330,6 @@ function EditorPage() {
         {isCompileWindowOpen ? "Close Compiler" : "Open Compiler"}
       </button>
 
-      {/* Compiler section */}
       <div
         className={`text-light p-4 ${isCompileWindowOpen ? "d-block" : "d-none"}`}
         style={{

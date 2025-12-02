@@ -5,10 +5,8 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
 
-// Path to users file
 const usersFilePath = path.join(__dirname, 'users.json');
 
-// Helper function to read users
 const readUsers = () => {
   try {
     if (!fs.existsSync(usersFilePath)) {
@@ -22,7 +20,6 @@ const readUsers = () => {
   }
 };
 
-// Helper function to write users
 const writeUsers = (users) => {
   try {
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
@@ -31,15 +28,12 @@ const writeUsers = (users) => {
   }
 };
 
-// Helper function to find or create user
 const findOrCreateUser = (profile, provider) => {
   const users = readUsers();
   
-  // Try to find existing user by provider ID
   let user = users.find(u => u.provider === provider && u.providerId === profile.id);
   
   if (!user) {
-    // Create new user
     user = {
       id: Date.now().toString(),
       email: profile.emails && profile.emails[0] ? profile.emails[0].value : null,
@@ -56,22 +50,18 @@ const findOrCreateUser = (profile, provider) => {
   return user;
 };
 
-// Serialize user
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// Deserialize user
 passport.deserializeUser((id, done) => {
   const users = readUsers();
   const user = users.find(u => u.id === id);
   done(null, user);
 });
 
-// Google OAuth Strategy
 
 
-// Local Strategy (Email/Password)
 passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
@@ -97,20 +87,16 @@ async (email, password, done) => {
   }
 }));
 
-// Helper function to register new user
 const registerUser = async (email, password, username) => {
   const users = readUsers();
   
-  // Check if user already exists
   const existingUser = users.find(u => u.email === email);
   if (existingUser) {
     throw new Error('User already exists');
   }
   
-  // Hash password
   const hashedPassword = await bcrypt.hash(password, 10);
   
-  // Create new user
   const newUser = {
     id: Date.now().toString(),
     email: email,

@@ -39,7 +39,6 @@
   font-family: 'Courier New', monospace;
 }
 
-/* Professional button styles - Red with black text */
 .btn-professional {
   background: #E50914;
   border: none;
@@ -61,7 +60,6 @@
   color: #000000;
 }
 
-/* Card styles - Netflix style */
 .professional-card {
   background: #1a1a1a;
   border: 1px solid #333333;
@@ -73,7 +71,6 @@
   border-color: #555555;
 }
 
-/* Input styles - Netflix style */
 .professional-input {
   background: #2a2a2a;
   border: 1px solid #444444;

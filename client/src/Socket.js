@@ -12,7 +12,6 @@ export const initSocket = async () => {
     
     const socket = io(backendUrl, options);
     
-    // Return a promise that resolves when connected or rejects on error
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
             reject(new Error('Connection timeout'));
@@ -30,7 +29,6 @@ export const initSocket = async () => {
             reject(error);
         });
         
-        // If already connected, resolve immediately
         if (socket.connected) {
             console.log('Socket already connected');
             clearTimeout(timeout);
