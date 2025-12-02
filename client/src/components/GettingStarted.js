@@ -44,6 +44,9 @@ function GettingStarted() {
                   <h3 className="card-title" style={{ color: "#ffffff", fontSize: "1.5rem", fontWeight: "600", marginBottom: "1rem" }}>Quick Start Guide</h3>
                   <ol className="guide-list">
                     <li>
+                      <strong>Sign In or Guest Access</strong> - Log in to access full features or continue as a guest
+                    </li>
+                    <li>
                       <strong>Navigate to "Start Coding"</strong> - Click on "Start Coding" in the navbar
                     </li>
                     <li>
@@ -88,7 +91,7 @@ function GettingStarted() {
                   }}>
                     <div className="card-body p-4">
                       <h5 className="feature-title" style={{ color: "#ffffff", fontSize: "1.2rem", fontWeight: "600", marginBottom: "0.75rem" }}>Multi-Language Support</h5>
-                      <p className="feature-text" style={{ color: "#b3b3b3", fontSize: "0.95rem", lineHeight: "1.6", margin: "0" }}>Supports 16+ languages: Python, Java, C++, JavaScript, and more!</p>
+                      <p className="feature-text" style={{ color: "#b3b3b3", fontSize: "0.95rem", lineHeight: "1.6", margin: "0" }}>Supports 16 languages: Python, Java, C++, Node.js, C, Ruby, Go, Scala, Bash, SQL, Pascal, C#, PHP, Swift, Rust, R.</p>
                     </div>
                   </div>
                 </div>
@@ -101,7 +104,7 @@ function GettingStarted() {
                   }}>
                     <div className="card-body p-4">
                       <h5 className="feature-title" style={{ color: "#ffffff", fontSize: "1.2rem", fontWeight: "600", marginBottom: "0.75rem" }}>Code Execution</h5>
-                      <p className="feature-text" style={{ color: "#b3b3b3", fontSize: "0.95rem", lineHeight: "1.6", margin: "0" }}>Run your code directly in the browser and see output instantly.</p>
+                      <p className="feature-text" style={{ color: "#b3b3b3", fontSize: "0.95rem", lineHeight: "1.6", margin: "0" }}>Integrated compiler with output window. Run code and see results instantly.</p>
                     </div>
                   </div>
                 </div>
@@ -138,8 +141,8 @@ function GettingStarted() {
                       of the editor to select your programming language.
                     </li>
                     <li>
-                      <strong>Running Code:</strong> Click "Open Compiler" button at 
-                      the bottom right, then click "Run Code" to execute your program.
+                      <strong>Running Code:</strong> Click the "Open Compiler" button at 
+                      the bottom right to reveal the output window, then click "Run Code" to execute your program.
                     </li>
                     <li>
                       <strong>Copy Room ID:</strong> Click "Copy Room ID" in the 

@@ -57,14 +57,14 @@ MeowCollab follows a modern **MERN-style** architecture (MongoDB, Express, React
 | | Socket.IO | WebSocket server for collaboration events |
 | | Passport.js | Authentication middleware (Local, Google, GitHub) |
 | **Execution** | JDoodle API | Remote code execution engine |
-| **Data** | JSON / In-Memory | Lightweight data storage (scalable to MongoDB) |
+| **Data** | SQLite + Prisma ORM | Relational database with modern ORM |
 
 ### 📊 System Architecture (ER Diagram)
 
 Below is the data model representing the entities stored in the system.
 
 > [!NOTE]
-> **Data Persistence:** User data is stored in a JSON file (`users.json`) on the server. To ensure data integrity during concurrent writes (e.g., multiple users signing up simultaneously), a **Mutex (Locking Mechanism)** is implemented in the backend.
+> **Data Persistence:** User data is stored in a SQLite database (`server/meowcollab.sqlite`) managed by **Prisma ORM**. This ensures structured data storage and easy schema management.
 
 ```mermaid
 erDiagram
@@ -109,9 +109,10 @@ MeowCollab/
 │
 ├── server/                 # Backend Node.js Application
 │   ├── auth.js            # Passport authentication strategies
+│   ├── prisma/            # Prisma schema and migrations
 │   ├── index.js           # Express server & Socket.IO setup
 │   ├── Actions.js         # WebSocket event constants
-│   ├── users.json         # File-based user storage
+│   ├── meowcollab.sqlite  # SQLite Database
 │   └── package.json       # Server dependencies
 │
 └── README.md              # Project documentation
