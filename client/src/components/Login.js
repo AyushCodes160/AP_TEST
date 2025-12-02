@@ -13,7 +13,8 @@ function Login() {
 
   const handleGuestLogin = async () => {
     try {
-      const response = await fetch("http://localhost:5001/auth/guest", {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
+      const response = await fetch(`${backendUrl}/auth/guest`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +70,8 @@ function Login() {
     const payload = isSignUp ? { email, password, username } : { email, password };
 
     try {
-      const response = await fetch(`http://localhost:5001${endpoint}`, {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
+      const response = await fetch(`${backendUrl}${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
